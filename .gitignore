@@ -1,2 +1,14 @@
 *.csv
 *.html
+*.toc
+*.zip
+*.out
+*.dvi
+*.pdf
+*.aux
+*.blg
+*.log
+*.nas
+*.gz
+*.snm
+*.nav
