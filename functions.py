@@ -1,6 +1,10 @@
 from pandas.tseries.holiday import USFederalHolidayCalendar as calendar
 import numpy as np
 import pandas as pd
+from sklearn.metrics import accuracy_score, r2_score, mean_absolute_error
+from sklearn.metrics import roc_curve, auc
+import matplotlib.pyplot as plt
+import random
 
 def getExtra(df):
     conditions = [ \
@@ -30,3 +34,55 @@ def getRushHour(df):
     (df['day'].isin(["Monday","Tuesday","Wednesday","Thursday","Friday"])) &\
     (df['holiday'] == False)
     
+
+def evaluateLGB(model, test_features, test_labels):
+    predictions = model.predict(test_features)
+    errors = abs(predictions - test_labels)
+    mape = 100 * np.mean(errors / test_labels)
+    r2 = r2_score(test_labels,predictions)
+    mea = mean_absolute_error(test_labels,predictions)
+    err = pd.DataFrame(test_labels-predictions)
+    print('Model Performance')
+    print('Average Error: {:0.4f} degrees.'.format(np.mean(errors)))
+    print('R2 Score: {:0.4f}'.format(r2))
+    print('MAE: {:0.4f}'.format(mea))
+    
+    sns.distplot(err,hist_kws={"log":True},kde=False);
+    plt.show()
+    sns.regplot(x=predictions, y=test_labels)
+    plt.show()
+    lgb.plot_importance(model.best_estimator_, max_num_features=10)
+    plt.show()
+    
+    
+def evaluateRF(model, test_features, test_labels):
+    predictions = model.predict(test_features)
+    errors = abs(predictions - test_labels)
+    mape = 100 * np.mean(errors / test_labels)
+    r2 = r2_score(test_labels,predictions)
+    mea = mean_absolute_error(test_labels,predictions)
+    err = pd.DataFrame(test_labels-predictions)
+    print('Model Performance')
+    print('Average Error: {:0.4f} degrees.'.format(np.mean(errors)))
+    print('R2 Score: {:0.4f}'.format(r2))
+    print('MAE: {:0.4f}'.format(mea))
+        
+    sns.distplot(err,hist_kws={"log":True},kde=False);
+    plt.show()
+    sns.regplot(x=predictions, y=test_labels)
+    plt.show()
+    
+def evaluateSVM(model, test_features, test_labels):
+    predictions = model.predict(test_features)
+    errors = abs(predictions - test_labels)
+    mape = 100 * np.mean(errors / test_labels)
+    r2 = r2_score(test_labels,predictions)
+    mea = mean_absolute_error(test_labels,predictions)
+    err = pd.DataFrame(test_labels-predictions)
+    print('Model Performance')
+    print('Average Error: {:0.4f} degrees.'.format(np.mean(errors)))
+    print('R2 Score: {:0.4f}'.format(r2))
+    print('MAE: {:0.4f}'.format(mea))
+        
+    sns.distplot(err,hist_kws={"log":True},kde=False);
+    plt.show()
