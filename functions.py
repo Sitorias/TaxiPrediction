@@ -1,10 +1,14 @@
 from pandas.tseries.holiday import USFederalHolidayCalendar as calendar
 import numpy as np
+import seaborn as sns
 import pandas as pd
 from sklearn.metrics import accuracy_score, r2_score, mean_absolute_error
 from sklearn.metrics import roc_curve, auc
 import matplotlib.pyplot as plt
 import random
+import lightgbm as lgb
+
+
 
 def getExtra(df):
     conditions = [ \
@@ -35,7 +39,7 @@ def getRushHour(df):
     (df['holiday'] == False)
     
 
-def evaluateLGB(model, test_features, test_labels):
+def evaluateLGB(model, test_features, test_labels,filename):
     predictions = model.predict(test_features)
     errors = abs(predictions - test_labels)
     mape = 100 * np.mean(errors / test_labels)
@@ -47,15 +51,30 @@ def evaluateLGB(model, test_features, test_labels):
     print('R2 Score: {:0.4f}'.format(r2))
     print('MAE: {:0.4f}'.format(mea))
     
-    sns.distplot(err,hist_kws={"log":True},kde=False);
-    plt.show()
-    sns.regplot(x=predictions, y=test_labels)
-    plt.show()
+    plt.figure(figsize=(16,9))
+    plt.subplot(1,2,1)
+    ax = sns.distplot(err,hist_kws={"log":True},kde=False)
+    ax.set_xlabel('Prediction', fontsize=20)
+    ax.set_ylabel('Count (log)', fontsize=20)    
+    ax.tick_params(labelsize=16)
+
+    plt.subplot(1,2,2)
+    ax = sns.regplot(x=predictions, y=test_labels)
+    ax.set_xlabel('Prediction', fontsize=20)
+    ax.set_ylabel('Actual', fontsize=20)    
+    ax.tick_params(labelsize=16)
+    plt.subplots_adjust(left=0.1, wspace=0.2, hspace=0.2, top=.9)
+    
+    plt.savefig(filename)
+
+    plt.figure(figsize=(16,9))
     lgb.plot_importance(model.best_estimator_, max_num_features=10)
     plt.show()
     
+
     
-def evaluateRF(model, test_features, test_labels):
+    
+def evaluateRF(model, test_features, test_labels, filename):
     predictions = model.predict(test_features)
     errors = abs(predictions - test_labels)
     mape = 100 * np.mean(errors / test_labels)
@@ -67,10 +86,23 @@ def evaluateRF(model, test_features, test_labels):
     print('R2 Score: {:0.4f}'.format(r2))
     print('MAE: {:0.4f}'.format(mea))
         
-    sns.distplot(err,hist_kws={"log":True},kde=False);
-    plt.show()
-    sns.regplot(x=predictions, y=test_labels)
-    plt.show()
+    plt.figure(figsize=(16,9))
+    
+    plt.subplot(1,2,1)
+    ax = sns.distplot(err,hist_kws={"log":True},kde=False);
+    ax.set_xlabel('Prediction', fontsize=20)
+    ax.set_ylabel('Count (log)', fontsize=20)    
+    ax.tick_params(labelsize=16)
+   
+    plt.subplot(1,2,2)
+    ax = sns.regplot(x=predictions, y=test_labels)
+    ax.set_xlabel('Prediction', fontsize=20)
+    ax.set_ylabel('Actual', fontsize=20)    
+    ax.tick_params(labelsize=16)
+    
+    plt.subplots_adjust(left=0.1, wspace=0.2, hspace=0.2, top=.9)
+
+    plt.savefig(filename)
     
 def evaluateSVM(model, test_features, test_labels):
     predictions = model.predict(test_features)
@@ -83,6 +115,9 @@ def evaluateSVM(model, test_features, test_labels):
     print('Average Error: {:0.4f} degrees.'.format(np.mean(errors)))
     print('R2 Score: {:0.4f}'.format(r2))
     print('MAE: {:0.4f}'.format(mea))
-        
-    sns.distplot(err,hist_kws={"log":True},kde=False);
-    plt.show()
+    
+    plt.figure(figsize=(16,9))
+    ax = sns.distplot(err,hist_kws={"log":True},kde=False)
+    ax.set_xlabel('Prediction', fontsize=20)
+    ax.set_ylabel('Count (log)', fontsize=20)    
+    ax.tick_params(labelsize=16)
