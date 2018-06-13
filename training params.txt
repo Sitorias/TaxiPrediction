@@ -26,3 +26,8 @@ Best params: ({'bagging_fraction': 0.8, 'boosting': 'gbdt', 'feature_fraction': 
 code5
 Best params: ({'bagging_fraction': 0.8, 'boosting': 'gbdt', 'feature_fraction': 0.8, 'learning_rate': 0.01, 'max_depth': 51, 'num_leaves': 150, 'num_threads': 4, 'objective': 'mae', 'verbose': -1, 'optimal_number_of_trees': 647}, 
 16.82097569050501)
+
+=== RUN 2 ===
+Code1
+Best params: ({'bagging_fraction': 0.8, 'boosting': 'gbdt', 'feature_fraction': 0.8, 'learning_rate': 0.003, 'num_leaves': 1000, 'num_threads': 4, 'objective': 'mae', 'verbose': -1, 'optimal_number_of_trees': 10000}, 
+0.25366824744876365)
